@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jamescodegaard/rate-my-professor/issues"
   },
-  "homepage": "https://github.com/jamescodegaard/rate-my-professor#readme"
+  "homepage": "https://github.com/jamescodegaard/rate-my-professor#readme",
+  "dependencies": {
+    "left-pad": "^1.3.0"
+  }
 }
