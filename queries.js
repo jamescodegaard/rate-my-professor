@@ -166,3 +166,5 @@ module.exports = {
 // INSERT INTO users (name, email) VALUES ('James', 'james@gmail.com'), ('Katrina', 'katrina@gmail.com'), ('Rebecca', 'rebecca@gmail.com');
 
 // CREATE TABLE professors (ID SERIAL PRIMARY KEY, first_name VARCHAR(30), last_name VARCHAR(30), title VARCHAR(30), school VARCHAR(30), department VARCHAR(30));
+
+// INSERT INTO professors (first_name, last_name, title, school, department) VALUES ('John', 'Candy', 'Director', 'Canada University', 'Theatre'), ('Lisa', 'Newcar', 'Administrator', 'University of Iowa', 'Biology');
