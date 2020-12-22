@@ -33,14 +33,14 @@ const createUser = (request, response) => {
   const { name, email } = request.body;
 
   pool.query(
-    "INSERT INTO users (name, email) VALUES ($1, $2)",
+    "INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id",
     [name, email],
     (error, result) => {
       if (error) {
         throw error;
       }
-      response.status(201).send(`User added with ID: ${result.insertId}`);
       console.log(result);
+      response.status(201).send(`User added with ID: ${result.rows[0].id}`);
       // console.log(response);
     }
   );
@@ -101,16 +101,17 @@ const getProfessorById = (request, response) => {
 };
 
 const createProfessor = (request, response) => {
-  const { firstName, lastName, title, school, department } = request.body;
+  const { first_name, last_name, title, school, department } = request.body;
 
   pool.query(
-    "INSERT INTO professors (first_name,last_name, title, school, department) VALUES ($1, $2, $3, $4, $5)",
-    [firstName, lastName, title, school, department],
+    "INSERT INTO professors (first_name, last_name, title, school, department) VALUES ($1, $2, $3, $4, $5) RETURNING id",
+    [first_name, last_name, title, school, department],
     (error, result) => {
       if (error) {
         throw error;
       }
-      response.status(201).send(`Professor added with ID: ${result.insertId}`);
+      console.log(result);
+      response.status(201).send(`Professor added with ID: ${result.rows[0].id}`);
     }
   );
 };
