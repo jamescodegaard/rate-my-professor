@@ -9,7 +9,7 @@ const pool = new Pool({
 
 // Users
 const getUsers = (request, response) => {
-  pool.query("SELECT * FROM users ORDER BY id ASC", (error, results) => {
+  pool.query("SELECT * FROM users ORDER BY user_id ASC", (error, results) => {
     if (error) {
       throw error;
     }
@@ -77,12 +77,15 @@ const deleteUser = (request, response) => {
 
 // professors
 const getProfessors = (request, response) => {
-  pool.query("SELECT * FROM professors ORDER BY id ASC", (error, result) => {
-    if (error) {
-      throw error;
+  pool.query(
+    "SELECT * FROM professors ORDER BY professor_id ASC",
+    (error, result) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).json(result.rows);
     }
-    response.status(200).json(result.rows);
-  });
+  );
 };
 
 const getProfessorById = (request, response) => {
