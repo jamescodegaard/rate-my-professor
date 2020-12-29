@@ -111,7 +111,9 @@ const createProfessor = (request, response) => {
         throw error;
       }
       console.log(result);
-      response.status(201).send(`Professor added with ID: ${result.rows[0].id}`);
+      response
+        .status(201)
+        .send(`Professor added with ID: ${result.rows[0].id}`);
     }
   );
 };
@@ -160,12 +162,16 @@ module.exports = {
 // PostgreSQL commands
 
 // CREATE TABLE users (
-//   ID SERIAL PRIMARY KEY,
-//   name VARCHAR(30), 
+//   user_id SERIAL PRIMARY KEY,
+//   name VARCHAR(30),
 //   email VARCHAR(30));
 
 // INSERT INTO users (name, email) VALUES ('James', 'james@gmail.com'), ('Katrina', 'katrina@gmail.com'), ('Rebecca', 'rebecca@gmail.com');
 
-// CREATE TABLE professors (ID SERIAL PRIMARY KEY, first_name VARCHAR(30), last_name VARCHAR(30), title VARCHAR(30), school VARCHAR(30), department VARCHAR(30));
+// CREATE TABLE professors (professor_id SERIAL PRIMARY KEY, first_name VARCHAR(30), last_name VARCHAR(30), title VARCHAR(30), school VARCHAR(30), department VARCHAR(30));
 
 // INSERT INTO professors (first_name, last_name, title, school, department) VALUES ('John', 'Candy', 'Director', 'Canada University', 'Theatre'), ('Lisa', 'Newcar', 'Administrator', 'University of Iowa', 'Biology');
+
+// CREATE TABLE reviews (professor_id INT NOT NULL, PRIMARY KEY (review_id, professor_id), FOREIGN KEY (professor_id) REFERENCES professors (professor_id), rating INT, text VARCHAR(500));
+
+// INSERT INTO reviews (professor_id, rating, text) VALUES ('1', '3', 'They were very informational but could be boring from time to time. Drink your coffee before hand!'), ('2', '3', 'Awesome teacher! Youll never be bored, make sure you do all the homework!');
