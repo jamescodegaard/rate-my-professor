@@ -89,11 +89,11 @@ const getProfessors = (request, response) => {
 };
 
 const getProfessorById = (request, response) => {
-  const id = parseInt(request.params.id);
+  const professor_id = parseInt(request.params.id);
 
   pool.query(
-    "SELECT * FROM professors WHERE professr_id = $1",
-    [id],
+    "SELECT * FROM professors WHERE professor_id = $1",
+    [professor_id],
     (error, result) => {
       if (error) {
         throw error;
@@ -107,7 +107,7 @@ const createProfessor = (request, response) => {
   const { first_name, last_name, title, school, department } = request.body;
 
   pool.query(
-    "INSERT INTO professors (first_name, last_name, title, school, department) VALUES ($1, $2, $3, $4, $5) RETURNING id",
+    "INSERT INTO professors (first_name, last_name, title, school, department) VALUES ($1, $2, $3, $4, $5) RETURNING professor_id",
     [first_name, last_name, title, school, department],
     (error, result) => {
       if (error) {
@@ -116,34 +116,35 @@ const createProfessor = (request, response) => {
       console.log(result);
       response
         .status(201)
-        .send(`Professor added with ID: ${result.rows[0].id}`);
+        .send(`Professor added with ID: ${result.rows[0].professor_id}`);
     }
   );
 };
+
 const updateProfessor = (request, response) => {
-  const id = parseInt(request.params.id);
+  const professor_id = parseInt(request.params.id);
   const { first_name, last_name, title, school, department } = request.body;
 
   pool.query(
-    "UPDATE professors SET first_name = $1,last_name = $2, title = $3, school = $4, department = $5 WHERE id = $6",
-    [first_name, last_name, title, school, department, id],
+    "UPDATE professors SET first_name = $1,last_name = $2, title = $3, school = $4, department = $5 WHERE professor_id = $6",
+    [first_name, last_name, title, school, department, professor_id],
     (error, result) => {
       if (error) {
         throw error;
       }
-      response.status(200).send(`Professor modified with ID: ${id}`);
+      response.status(200).send(`Professor modified with ID: ${professor_id}`);
     }
   );
 };
 
 const deleteProfessor = (request, response) => {
-  const id = parseInt(request.params.id);
+  const professor_id = parseInt(request.params.id);
 
-  pool.query("DELETE FROM professors WHERE id = $1", [id], (error, result) => {
+  pool.query("DELETE FROM professors WHERE professor_id = $1", [professor_id], (error, result) => {
     if (error) {
       throw error;
     }
-    response.status(200).send(`Professer deleted with ID: ${id}`);
+    response.status(200).send(`Professer deleted with ID: ${professor_id}`);
   });
 };
 
