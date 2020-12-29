@@ -147,13 +147,6 @@ const deleteProfessor = (request, response) => {
 
 // reviews
 
-const createReview = (request, response) => {
-  const { professor_id, rating, text } = request.body;
-
-  pool.query(
-    "INSERT INTO reviews (professor_id, rating, text) VALUES ($1, $2, $3) RETURNING id",
-    [professor_id, rating, text],
-
 const getReviews = (request, response) => {
   pool.query("SELECT * FROM reviews ORDER BY id ASC", (error, result) => {
     if (error) {
@@ -180,6 +173,24 @@ const getReviewById = (request, response) => {
     }
   );
 };
+
+const createReview = (request, response) => {
+  const { professor_id, rating, text } = request.body;
+
+  pool.query(
+    "INSERT INTO reviews (professor_id, rating, text) VALUES ($1, $2, $3) RETURNING id",
+    [professor_id, rating, text],
+    (error, result) => {
+      if (error) {
+        throw error;
+      }
+      console.log(result);
+      response.status(201).send(`Professor added with ID: ${result.rows[0].id}`);
+    }
+  );
+};
+
+
 const updateReview = (request, response) => {
   const id = parseInt(request.params.id);
   const { professor_id, rating, text } = request.body;
@@ -192,13 +203,6 @@ const updateReview = (request, response) => {
         throw error;
       }
       response.status(200).send(`Review modified with ID: ${id}`);
-    }
-  );
-};
-
-
-
-      response.status(200).json(result.rows);
     }
   );
 };
