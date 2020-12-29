@@ -117,11 +117,11 @@ const createProfessor = (request, response) => {
 };
 const updateProfessor = (request, response) => {
   const id = parseInt(request.params.id);
-  const { firstName, lastName, title, school, department } = request.body;
+  const { first_name, last_name, title, school, department } = request.body;
 
   pool.query(
-    "UPDATE professors SET first_name,last_name, title, school, department = $1, email = $2 WHERE id = $3",
-    [firstName, lastName, title, school, department, id],
+    "UPDATE professors SET first_name = $1,last_name = $2, title = $3, school = $4, department = $5 WHERE id = $6",
+    [first_name, last_name, title, school, department, id],
     (error, result) => {
       if (error) {
         throw error;
