@@ -144,6 +144,41 @@ const deleteProfessor = (request, response) => {
 
 // end professor
 
+// reviews
+
+const createReview = (request, response) => {
+  const { professor_id, rating, text } = request.body;
+
+  pool.query(
+    "INSERT INTO reviews (professor_id, rating, text) VALUES ($1, $2, $3) RETURNING id",
+    [professor_id, rating, text],
+    (error, result) => {
+      if (error) {
+        throw error;
+      }
+      console.log(result);
+      response.status(201).send(`Review added with ID: ${result.rows[0].id}`);
+    }
+  );
+};
+const updateReview = (request, response) => {
+  const id = parseInt(request.params.id);
+  const { professor_id, rating, text } = request.body;
+
+  pool.query(
+    "UPDATE reviews SET professor_id = $1, rating = $2, text = $3 WHERE id = $4",
+    [professor_id, rating, text, id],
+    (error, result) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).send(`Review modified with ID: ${id}`);
+    }
+  );
+};
+
+//end reviews
+
 module.exports = {
   getUsers,
   getUserById,
@@ -155,6 +190,11 @@ module.exports = {
   createProfessor,
   updateProfessor,
   deleteProfessor,
+  getReviews,
+  getReviewById,
+  createReview,
+  updateReview,
+  deleteReview,
 };
 
 // PostgreSQL commands
