@@ -119,11 +119,11 @@ const createProfessor = (request, response) => {
 };
 const updateProfessor = (request, response) => {
   const id = parseInt(request.params.id);
-  const { firstName, lastName, title, school, department } = request.body;
+  const { first_name, last_name, title, school, department } = request.body;
 
   pool.query(
-    "UPDATE professors SET first_name,last_name, title, school, department = $1, email = $2 WHERE id = $3",
-    [firstName, lastName, title, school, department, id],
+    "UPDATE professors SET first_name = $1,last_name = $2, title = $3, school = $4, department = $5 WHERE id = $6",
+    [first_name, last_name, title, school, department, id],
     (error, result) => {
       if (error) {
         throw error;
@@ -146,6 +146,82 @@ const deleteProfessor = (request, response) => {
 
 // end professor
 
+
+// reviews
+
+const getReviews = (request, response) => {
+  pool.query("SELECT * FROM reviews ORDER BY id ASC", (error, result) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(result.rows);
+  });
+};
+
+const getReviewById = (request, response) => {
+  const id = parseInt(request.params.id);
+
+  pool.query(
+    "SELECT * FROM reviews WHERE id = $1",
+    [id],
+
+    (error, result) => {
+      if (error) {
+        throw error;
+      }
+
+      console.log(result);
+      response.status(201).send(`Review added with ID: ${result.rows[0].id}`);
+    }
+  );
+};
+
+const createReview = (request, response) => {
+  const { professor_id, rating, text } = request.body;
+
+  pool.query(
+    "INSERT INTO reviews (professor_id, rating, text) VALUES ($1, $2, $3) RETURNING id",
+    [professor_id, rating, text],
+    (error, result) => {
+      if (error) {
+        throw error;
+      }
+      console.log(result);
+      response.status(201).send(`Review added with ID: ${result.rows[0].id}`);
+    }
+  );
+};
+
+
+const updateReview = (request, response) => {
+  const id = parseInt(request.params.id);
+  const { professor_id, rating, text } = request.body;
+
+  pool.query(
+    "UPDATE reviews SET professor_id = $1, rating = $2, text = $3 WHERE id = $4",
+    [professor_id, rating, text, id],
+    (error, result) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).send(`Review modified with ID: ${id}`);
+    }
+  );
+};
+
+const deleteReview = (request, response) => {
+  const id = parseInt(request.params.id);
+
+  pool.query("DELETE FROM users WHERE id = $1", [id], (error, result) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).send(`Review deleted with ID: ${id}`);
+  });
+};
+
+//end reviews
+
 module.exports = {
   getUsers,
   getUserById,
@@ -157,6 +233,11 @@ module.exports = {
   createProfessor,
   updateProfessor,
   deleteProfessor,
+  getReviews,
+  getReviewById,
+  createReview,
+  updateReview,
+  deleteReview,
 };
 
 // PostgreSQL commands
@@ -172,6 +253,9 @@ module.exports = {
 
 // INSERT INTO professors (first_name, last_name, title, school, department) VALUES ('John', 'Candy', 'Director', 'Canada University', 'Theatre'), ('Lisa', 'Newcar', 'Administrator', 'University of Iowa', 'Biology');
 
+<<<<<<< HEAD
 // CREATE TABLE reviews (professor_id INT NOT NULL, PRIMARY KEY (review_id, professor_id), FOREIGN KEY (professor_id) REFERENCES professors (professor_id), rating INT, text VARCHAR(500));
 
 // INSERT INTO reviews (professor_id, rating, text) VALUES ('1', '3', 'They were very informational but could be boring from time to time. Drink your coffee before hand!'), ('2', '3', 'Awesome teacher! Youll never be bored, make sure you do all the homework!');
+=======
+>>>>>>> 89ed2c3342e1daba34f30ca409844a4ea963a266
