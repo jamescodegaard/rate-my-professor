@@ -254,6 +254,6 @@ module.exports = {
 
 // INSERT INTO professors (first_name, last_name, title, school, department) VALUES ('John', 'Candy', 'Director', 'Canada University', 'Theatre'), ('Lisa', 'Newcar', 'Administrator', 'University of Iowa', 'Biology');
 
-// CREATE TABLE reviews (professor_id INT NOT NULL, PRIMARY KEY (review_id, professor_id), FOREIGN KEY (professor_id) REFERENCES professors (professor_id), rating INT, text VARCHAR(500));
+// CREATE TABLE reviews (professor_id INT NOT NULL, review_id SERIAL PRIMARY KEY, FOREIGN KEY (professor_id) REFERENCES professors (professor_id), rating INT, text VARCHAR(500));
 
 // INSERT INTO reviews (professor_id, rating, text) VALUES ('1', '3', 'They were very informational but could be boring from time to time. Drink your coffee before hand!'), ('2', '3', 'Awesome teacher! Youll never be bored, make sure you do all the homework!');
