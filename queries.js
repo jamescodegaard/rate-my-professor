@@ -117,11 +117,11 @@ const createProfessor = (request, response) => {
 };
 const updateProfessor = (request, response) => {
   const id = parseInt(request.params.id);
-  const { firstName, lastName, title, school, department } = request.body;
+  const { first_name, last_name, title, school, department } = request.body;
 
   pool.query(
-    "UPDATE professors SET first_name,last_name, title, school, department = $1, email = $2 WHERE id = $3",
-    [firstName, lastName, title, school, department, id],
+    "UPDATE professors SET first_name = $1,last_name = $2, title = $3, school = $4, department = $5 WHERE id = $6",
+    [first_name, last_name, title, school, department, id],
     (error, result) => {
       if (error) {
         throw error;
@@ -144,6 +144,7 @@ const deleteProfessor = (request, response) => {
 
 // end professor
 
+
 // reviews
 
 const createReview = (request, response) => {
@@ -152,10 +153,28 @@ const createReview = (request, response) => {
   pool.query(
     "INSERT INTO reviews (professor_id, rating, text) VALUES ($1, $2, $3) RETURNING id",
     [professor_id, rating, text],
+
+const getReviews = (request, response) => {
+  pool.query("SELECT * FROM reviews ORDER BY id ASC", (error, result) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(result.rows);
+  });
+};
+
+const getReviewById = (request, response) => {
+  const id = parseInt(request.params.id);
+
+  pool.query(
+    "SELECT * FROM reviews WHERE id = $1",
+    [id],
+
     (error, result) => {
       if (error) {
         throw error;
       }
+
       console.log(result);
       response.status(201).send(`Review added with ID: ${result.rows[0].id}`);
     }
@@ -175,6 +194,24 @@ const updateReview = (request, response) => {
       response.status(200).send(`Review modified with ID: ${id}`);
     }
   );
+};
+
+
+
+      response.status(200).json(result.rows);
+    }
+  );
+};
+
+const deleteReview = (request, response) => {
+  const id = parseInt(request.params.id);
+
+  pool.query("DELETE FROM users WHERE id = $1", [id], (error, result) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).send(`Review deleted with ID: ${id}`);
+  });
 };
 
 //end reviews
@@ -209,3 +246,4 @@ module.exports = {
 // CREATE TABLE professors (ID SERIAL PRIMARY KEY, first_name VARCHAR(30), last_name VARCHAR(30), title VARCHAR(30), school VARCHAR(30), department VARCHAR(30));
 
 // INSERT INTO professors (first_name, last_name, title, school, department) VALUES ('John', 'Candy', 'Director', 'Canada University', 'Theatre'), ('Lisa', 'Newcar', 'Administrator', 'University of Iowa', 'Biology');
+
