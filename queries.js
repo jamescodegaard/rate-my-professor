@@ -89,11 +89,11 @@ const getProfessors = (request, response) => {
 };
 
 const getProfessorById = (request, response) => {
-  const id = parseInt(request.params.id);
+  const professor_id = parseInt(request.params.id);
 
   pool.query(
-    "SELECT * FROM professors WHERE professr_id = $1",
-    [id],
+    "SELECT * FROM professors WHERE professor_id = $1",
+    [professor_id],
     (error, result) => {
       if (error) {
         throw error;
@@ -107,7 +107,7 @@ const createProfessor = (request, response) => {
   const { first_name, last_name, title, school, department } = request.body;
 
   pool.query(
-    "INSERT INTO professors (first_name, last_name, title, school, department) VALUES ($1, $2, $3, $4, $5) RETURNING id",
+    "INSERT INTO professors (first_name, last_name, title, school, department) VALUES ($1, $2, $3, $4, $5) RETURNING professor_id",
     [first_name, last_name, title, school, department],
     (error, result) => {
       if (error) {
@@ -116,34 +116,35 @@ const createProfessor = (request, response) => {
       console.log(result);
       response
         .status(201)
-        .send(`Professor added with ID: ${result.rows[0].id}`);
+        .send(`Professor added with ID: ${result.rows[0].professor_id}`);
     }
   );
 };
+
 const updateProfessor = (request, response) => {
-  const id = parseInt(request.params.id);
+  const professor_id = parseInt(request.params.id);
   const { first_name, last_name, title, school, department } = request.body;
 
   pool.query(
-    "UPDATE professors SET first_name = $1,last_name = $2, title = $3, school = $4, department = $5 WHERE id = $6",
-    [first_name, last_name, title, school, department, id],
+    "UPDATE professors SET first_name = $1,last_name = $2, title = $3, school = $4, department = $5 WHERE professor_id = $6",
+    [first_name, last_name, title, school, department, professor_id],
     (error, result) => {
       if (error) {
         throw error;
       }
-      response.status(200).send(`Professor modified with ID: ${id}`);
+      response.status(200).send(`Professor modified with ID: ${professor_id}`);
     }
   );
 };
 
 const deleteProfessor = (request, response) => {
-  const id = parseInt(request.params.id);
+  const professor_id = parseInt(request.params.id);
 
-  pool.query("DELETE FROM professors WHERE id = $1", [id], (error, result) => {
+  pool.query("DELETE FROM professors WHERE professor_id = $1", [professor_id], (error, result) => {
     if (error) {
       throw error;
     }
-    response.status(200).send(`Professer deleted with ID: ${id}`);
+    response.status(200).send(`Professer deleted with ID: ${professor_id}`);
   });
 };
 
@@ -152,7 +153,7 @@ const deleteProfessor = (request, response) => {
 // reviews
 
 const getReviews = (request, response) => {
-  pool.query("SELECT * FROM reviews ORDER BY id ASC", (error, result) => {
+  pool.query("SELECT * FROM reviews ORDER BY review_id ASC", (error, result) => {
     if (error) {
       throw error;
     }
@@ -161,19 +162,16 @@ const getReviews = (request, response) => {
 };
 
 const getReviewById = (request, response) => {
-  const id = parseInt(request.params.id);
+  const review_id = parseInt(request.params.id);
 
   pool.query(
-    "SELECT * FROM reviews WHERE id = $1",
-    [id],
-
+    "SELECT * FROM reviews WHERE review_id = $1",
+    [review_id],
     (error, result) => {
       if (error) {
         throw error;
       }
-
-      console.log(result);
-      response.status(201).send(`Review added with ID: ${result.rows[0].id}`);
+      response.status(200).json(result.rows);
     }
   );
 };
@@ -182,42 +180,42 @@ const createReview = (request, response) => {
   const { professor_id, rating, text } = request.body;
 
   pool.query(
-    "INSERT INTO reviews (professor_id, rating, text) VALUES ($1, $2, $3) RETURNING id",
+    "INSERT INTO reviews (professor_id, rating, text) VALUES ($1, $2, $3) RETURNING review_id",
     [professor_id, rating, text],
     (error, result) => {
       if (error) {
         throw error;
       }
       console.log(result);
-      response.status(201).send(`Review added with ID: ${result.rows[0].id}`);
+      response.status(201).send(`Review added with ID: ${result.rows[0].review_id}`);
     }
   );
 };
 
 const updateReview = (request, response) => {
-  const id = parseInt(request.params.id);
+  const review_id = parseInt(request.params.id);
   const { professor_id, rating, text } = request.body;
 
   pool.query(
-    "UPDATE reviews SET professor_id = $1, rating = $2, text = $3 WHERE id = $4",
-    [professor_id, rating, text, id],
+    "UPDATE reviews SET professor_id = $1, rating = $2, text = $3 WHERE review_id = $4",
+    [professor_id, rating, text, review_id],
     (error, result) => {
       if (error) {
         throw error;
       }
-      response.status(200).send(`Review modified with ID: ${id}`);
+      response.status(200).send(`Review modified with ID: ${review_id}`);
     }
   );
 };
 
 const deleteReview = (request, response) => {
-  const id = parseInt(request.params.id);
+  const review_id = parseInt(request.params.id);
 
-  pool.query("DELETE FROM users WHERE id = $1", [id], (error, result) => {
+  pool.query("DELETE FROM reviews WHERE review_id = $1", [review_id], (error, result) => {
     if (error) {
       throw error;
     }
-    response.status(200).send(`Review deleted with ID: ${id}`);
+    response.status(200).send(`Review deleted with ID: ${review_id}`);
   });
 };
 
