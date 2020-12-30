@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jamescodegaard/rate-my-professor#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "left-pad": "^1.3.0",
     "node": "^15.4.0",
