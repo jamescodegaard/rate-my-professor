@@ -94,12 +94,21 @@ const getProfessorById = (request, response) => {
   pool.query(
     "SELECT * FROM professors WHERE professor_id = $1",
     [professor_id],
-    (error, result) => {
+    (error, prof_result) => {
+      pool.query("SELECT * FROM reviews WHERE professor_id = $1", [professor_id], (error, review_result) => {
+        prof_result.rows[0]["reviews"] = review_result.rows
+        const info = {
+          professor: prof_result.rows,
+        }
+        if (error) {
+          throw error;
+        }
+        response.status(200).json(info);
+      })
       if (error) {
         throw error;
       }
-      response.status(200).json(result.rows);
-    }
+    },
   );
 };
 
