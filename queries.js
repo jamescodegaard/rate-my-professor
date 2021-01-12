@@ -125,7 +125,7 @@ const createProfessor = (request, response) => {
       console.log(result);
       response
         .status(201)
-        .send(`Professor added with ID: ${result.rows[0].professor_id}`);
+        .send({professor_id: result.rows[0].professor_id});
     }
   );
 };
