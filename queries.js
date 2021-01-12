@@ -21,12 +21,16 @@ const getUsers = (request, response) => {
 const getUserById = (request, response) => {
   const user_id = parseInt(request.params.id);
 
-  pool.query("SELECT * FROM users WHERE user_id = $1", [user_id], (error, results) => {
-    if (error) {
-      throw error;
+  pool.query(
+    "SELECT * FROM users WHERE user_id = $1",
+    [user_id],
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).json(results.rows);
     }
-    response.status(200).json(results.rows);
-  });
+  );
 };
 
 const createUser = (request, response) => {
@@ -40,7 +44,9 @@ const createUser = (request, response) => {
         throw error;
       }
       console.log(result);
-      response.status(201).send(`User added with ID: ${result.rows[0].user_id}`);
+      response
+        .status(201)
+        .send(`User added with ID: ${result.rows[0].user_id}`);
       // console.log(response);
     }
   );
@@ -65,12 +71,16 @@ const updateUser = (request, response) => {
 const deleteUser = (request, response) => {
   const user_id = parseInt(request.params.id);
 
-  pool.query("DELETE FROM users WHERE user_id = $1", [user_id], (error, result) => {
-    if (error) {
-      throw error;
+  pool.query(
+    "DELETE FROM users WHERE user_id = $1",
+    [user_id],
+    (error, result) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).send(`User deleted with ID: ${user_id}`);
     }
-    response.status(200).send(`User deleted with ID: ${user_id}`);
-  });
+  );
 };
 
 // end User
@@ -95,20 +105,24 @@ const getProfessorById = (request, response) => {
     "SELECT * FROM professors WHERE professor_id = $1",
     [professor_id],
     (error, prof_result) => {
-      pool.query("SELECT * FROM reviews WHERE professor_id = $1", [professor_id], (error, review_result) => {
-        prof_result.rows[0]["reviews"] = review_result.rows
-        const info = {
-          professor: prof_result.rows,
+      pool.query(
+        "SELECT * FROM reviews WHERE professor_id = $1",
+        [professor_id],
+        (error, review_result) => {
+          prof_result.rows[0]["reviews"] = review_result.rows;
+          const info = {
+            professor: prof_result.rows,
+          };
+          if (error) {
+            throw error;
+          }
+          response.status(200).json(info);
         }
-        if (error) {
-          throw error;
-        }
-        response.status(200).json(info);
-      })
+      );
       if (error) {
         throw error;
       }
-    },
+    }
   );
 };
 
@@ -123,9 +137,7 @@ const createProfessor = (request, response) => {
         throw error;
       }
       console.log(result);
-      response
-        .status(201)
-        .send({professor_id: result.rows[0].professor_id});
+      response.status(201).send({ professor_id: result.rows[0].professor_id });
     }
   );
 };
@@ -149,12 +161,16 @@ const updateProfessor = (request, response) => {
 const deleteProfessor = (request, response) => {
   const professor_id = parseInt(request.params.id);
 
-  pool.query("DELETE FROM professors WHERE professor_id = $1", [professor_id], (error, result) => {
-    if (error) {
-      throw error;
+  pool.query(
+    "DELETE FROM professors WHERE professor_id = $1",
+    [professor_id],
+    (error, result) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).send(`Professer deleted with ID: ${professor_id}`);
     }
-    response.status(200).send(`Professer deleted with ID: ${professor_id}`);
-  });
+  );
 };
 
 // end professor
@@ -162,12 +178,15 @@ const deleteProfessor = (request, response) => {
 // reviews
 
 const getReviews = (request, response) => {
-  pool.query("SELECT * FROM reviews ORDER BY review_id ASC", (error, result) => {
-    if (error) {
-      throw error;
+  pool.query(
+    "SELECT * FROM reviews ORDER BY review_id ASC",
+    (error, result) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).json(result.rows);
     }
-    response.status(200).json(result.rows);
-  });
+  );
 };
 
 const getReviewById = (request, response) => {
@@ -196,7 +215,7 @@ const createReview = (request, response) => {
         throw error;
       }
       console.log(result);
-      response.status(201).send(`Review added with ID: ${result.rows[0].review_id}`);
+      response.status(201).send(result.rows[0]);
     }
   );
 };
@@ -220,12 +239,16 @@ const updateReview = (request, response) => {
 const deleteReview = (request, response) => {
   const review_id = parseInt(request.params.id);
 
-  pool.query("DELETE FROM reviews WHERE review_id = $1", [review_id], (error, result) => {
-    if (error) {
-      throw error;
+  pool.query(
+    "DELETE FROM reviews WHERE review_id = $1",
+    [review_id],
+    (error, result) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).send(`Review deleted with ID: ${review_id}`);
     }
-    response.status(200).send(`Review deleted with ID: ${review_id}`);
-  });
+  );
 };
 
 //end reviews
