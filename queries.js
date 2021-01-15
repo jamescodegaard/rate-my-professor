@@ -149,11 +149,13 @@ const updateProfessor = (request, response) => {
   pool.query(
     "UPDATE professors SET first_name = $1,last_name = $2, title = $3, school = $4, department = $5 WHERE professor_id = $6",
     [first_name, last_name, title, school, department, professor_id],
+
     (error, result) => {
       if (error) {
         throw error;
       }
-      response.status(200).send(`Professor modified with ID: ${professor_id}`);
+      console.log(result);
+      response.status(200).send(result);
     }
   );
 };
