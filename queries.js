@@ -233,7 +233,7 @@ const updateReview = (request, response) => {
       if (error) {
         throw error;
       }
-      response.status(200).send(`Review modified with ID: ${review_id}`);
+      response.status(200).send(result.rows);
     }
   );
 };
