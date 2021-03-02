@@ -6,7 +6,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 // const express = require("express");
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const db = require("./queries");
 const cors = require("cors");
 
@@ -43,7 +43,6 @@ app.post("/reviews", db.createReview);
 app.put("/reviews/:id", db.updateReview);
 app.delete("/reviews/:id", db.deleteReview);
 
-app.listen(process.env.PORT)
 app.listen(port, () => {
   console.log(`App running on port ${port}.`);
 });
