@@ -1,11 +1,19 @@
 const Pool = require("pg").Pool;
-const pool = new Pool({
-  user: "me",
-  host: "localhost",
-  database: "rate_my_professor",
-  password: "password",
-  port: 5432,
-});
+let pool;
+if (process.env.NODE_ENV !== "production") {
+  pool = new Pool({
+    user: "me",
+    host: "localhost",
+    database: "rate_my_professor",
+    password: "password",
+    port: 5432,
+  });
+}
+else {
+  pool = new Pool ({
+    connectionString: process.env.DATABASE_URL
+  })
+}
 
 // Users
 const getUsers = (request, response) => {
